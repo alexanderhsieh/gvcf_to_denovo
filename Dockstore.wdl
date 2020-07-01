@@ -12,8 +12,6 @@ workflow gvcf_to_denovo {
 		File ped
 
 		File parse_table_script
-
-		File table
 		
 		File ref_fasta
 		File ref_fasta_index
@@ -28,6 +26,8 @@ workflow gvcf_to_denovo {
 		String output_suffix
 	}
 
+	## Parse sample table downloaded from Terra (.tsv)
+	## Generate table that enables grouping trio gvcfs together as Array[File]
 	call read_terra_table{
 		input:
 			script = parse_table_script,
@@ -36,11 +36,13 @@ workflow gvcf_to_denovo {
 			ped = ped
 	}
 
+	## Read in table and coerce as Array[File]
 	call read_table {
 		input:
 			table = read_terra_table.out
 	}
 
+	## i index (rows) correspond to individual samples
 	scatter (i in range(length(read_table.out))) {
 
 		Int n_cols = length(read_table.out[0])

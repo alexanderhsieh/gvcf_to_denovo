@@ -78,22 +78,24 @@ with open(sample_table, 'r') as stf2:
 		else:
 			id = tmp[idx['entity:sample_id']]
 
-			pb_path = pathd[id]
-			pb_idx = index_d[id]
-			
-			if pedd[id]['fa'] == '0':
-				fa_path = '.'
-				fa_idx = '.'
-			else:
-				fa_path = pathd[pedd[id]['fa']]
-				fa_idx = index_d[pedd[id]['fa']]
-			if pedd[id]['mo'] == '0':
-				mo_path = '.'
-				mo_idx = '.'
-			else:
-				mo_path = pathd[pedd[id]['mo']]
-				mo_idx = index_d[pedd[id]['mo']]
-
-
 			if not ('fa' in id or 'mo' in id):
-				print('\t'.join([id, pb_path, fa_path, mo_path, pb_idx, fa_idx, mo_idx]))
+
+				pb_path = pathd[id]
+				pb_idx = index_d[id]
+				
+				if pedd[id]['fa'] == '0':
+					fa_path = '.'
+					fa_idx = '.'
+				else:
+					fa_path = pathd[pedd[id]['fa']]
+					fa_idx = index_d[pedd[id]['fa']]
+				if pedd[id]['mo'] == '0':
+					mo_path = '.'
+					mo_idx = '.'
+				else:
+					mo_path = pathd[pedd[id]['mo']]
+					mo_idx = index_d[pedd[id]['mo']]
+
+
+				if not ('fa' in id or 'mo' in id):
+					print('\t'.join([id, pb_path, fa_path, mo_path, pb_idx, fa_idx, mo_idx]))

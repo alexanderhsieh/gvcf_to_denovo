@@ -125,6 +125,8 @@ task read_terra_table {
 
 	runtime {
 		docker: "mwalker174/sv-pipeline:mw-00c-stitch-65060a1"
+		preemptible: 3
+		maxRetries: 3
 	}
 
 	output {
@@ -148,6 +150,8 @@ task read_table {
 
 	runtime {
 		docker: "ubuntu:latest"
+		preemptible: 3
+		maxRetries: 3
 	}
 
 	output{
@@ -169,6 +173,8 @@ task merge_trio_gvcf {
 
 		File ref_fasta
 		File ref_fasta_index
+
+		Int disk_size = 100 
 	}
 
 	String outfname = "~{sample_id}.TRIO.g.vcf.gz"
@@ -186,8 +192,9 @@ task merge_trio_gvcf {
 
 	runtime {
 		docker: "gatksv/sv-base-mini:cbb1fc"
-		memory: "8G"
-		preemptible: 3
+		memory: "12G"
+	    disks: "local-disk " + disk_size + " HDD"
+	    preemptible: 3
 		maxRetries: 3
 	}
 

@@ -9,8 +9,6 @@ import "https://raw.githubusercontent.com/alexanderhsieh/EM-mosaic-pipeline/mast
 workflow gvcf_to_denovo {
 	input {
 
-		String sample_id
-
 		File sample_table
 		File sample_map
 		File ped

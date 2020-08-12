@@ -48,7 +48,7 @@ workflow gvcf_to_denovo {
 		Array[File] selected_gvcf_columns = [ read_table.out[i][1], read_table.out[i][2], read_table.out[i][3] ]
 		Array[File] selected_gvcf_index_columns = [ read_table.out[i][4], read_table.out[i][5], read_table.out[i][6] ]
 
-		call gvcf_to_denovo.merge_trio_gvcf {
+		call call_denovo.merge_trio_gvcf {
 			input:
 				sample_id = sample_id,
 				trio_gvcf_array = selected_gvcf_columns,
@@ -57,7 +57,7 @@ workflow gvcf_to_denovo {
 				ref_fasta_index = ref_fasta_index
 		}
 
-		call gvcf_to_denovo.call_denovos {
+		call call_denovo.call_denovos {
 			input:
 				sample_id = sample_id,
 				trio_readgroup_ids = merge_trio_gvcf.rg_ids,

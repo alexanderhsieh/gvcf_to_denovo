@@ -44,25 +44,11 @@ workflow gvcf_to_denovo {
 
 		Int n_cols = length(read_table.out[0])
 
-		## parse columns containing gvcf google bucket paths 
-		scatter (j in range(n_cols)) {
-			if (j >=1 && j<=3) {
-				File gvcf_columns = read_table.out[i][j]
-			}
-		}
-
-		## parse columns containing gvcf index google bucket paths
-		scatter (j in range(n_cols)) {
-			if (j >=4 && j<=6) {
-				File gvcf_index_columns = read_table.out[i][j]
-			}
-		}
-
 		String sample_id = read_table.out[i][0]
-		Array[File] selected_gvcf_columns = select_all(gvcf_columns)
-		Array[File] selected_gvcf_index_columns = select_all(gvcf_index_columns)
+		Array[File] selected_gvcf_columns = [ read_table.out[i][1], read_table.out[i][2], read_table.out[i][3] ]
+		Array[File] selected_gvcf_index_columns = [ read_table.out[i][4], read_table.out[i][5], read_table.out[i][6] ]
 
-		call call_denovo.merge_trio_gvcf {
+		call gvcf_to_denovo.merge_trio_gvcf {
 			input:
 				sample_id = sample_id,
 				trio_gvcf_array = selected_gvcf_columns,
@@ -71,7 +57,7 @@ workflow gvcf_to_denovo {
 				ref_fasta_index = ref_fasta_index
 		}
 
-		call call_denovo.call_denovos {
+		call gvcf_to_denovo.call_denovos {
 			input:
 				sample_id = sample_id,
 				trio_readgroup_ids = merge_trio_gvcf.rg_ids,
